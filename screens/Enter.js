@@ -18,8 +18,6 @@ export default class Enter extends Component{
       this.state ={
         userId : firebase.auth().currentUser.email,
         dateOf : "",
-        mealType : "",
-        beforeOrAfter : "",
         readingOf : ""
       }
     }
@@ -30,21 +28,17 @@ export default class Enter extends Component{
   
   
     
-    addReading =(dateOf, mealType, beforeOrAfter, readingOf)=>{
+    addReading =(dateOf, readingOf)=>{
       var userId = this.state.userId
       var randomRequestId = this.createUniqueId()
-      db.collection('glucose_readings').add({
+      db.collection('health_readings').add({
           "user_id": userId,
-          "date_of": dateOf,
-          "meal_type": mealType,
-          "before_or_after"  : beforeOrAfter,
+          "date_of" : dateOf,
           "reading_of" : readingOf
       })
   
       this.setState({
         dateOf : "",
-        mealType : "",
-        beforeOrAfter : "",
         readingOf : ""
       })
   
@@ -69,27 +63,7 @@ export default class Enter extends Component{
                 />
                 <TextInput
                   style ={styles.formTextInput}
-                  placeholder={"breakfast/lunch/dinner"}
-                  onChangeText ={(text)=>{
-                      this.setState({
-                          mealType :text
-                      })
-                  }}
-                  value ={this.state.mealType}
-                />
-                <TextInput
-                  style ={styles.formTextInput}
-                  placeholder={"Before or After Meal"}
-                  onChangeText ={(text)=>{
-                      this.setState({
-                          beforeOrAfter :text
-                      })
-                  }}
-                  value ={this.state.beforeOrAfter}
-                />
-                <TextInput
-                  style ={styles.formTextInput}
-                  placeholder={"Glucometer Reading"}
+                  placeholder={"Data Type - Reading"}
                   onChangeText ={(text)=>{
                       this.setState({
                           readingOf :text
@@ -99,7 +73,7 @@ export default class Enter extends Component{
                 />
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={()=>{this.addReading(this.state.dateOf,this.state.mealType, this.state.beforeOrAfter, this.state.readingOf)}}
+                  onPress={()=>{this.addReading(this.state.dateOf, this.state.readingOf)}}
                   >
                   <Text>Save</Text>
                 </TouchableOpacity>

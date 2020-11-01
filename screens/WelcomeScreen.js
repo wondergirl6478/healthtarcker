@@ -190,7 +190,7 @@ showModal = ()=>{
             this.showModal()
           }
         <View style={{justifyContent:'center', alignItems:'center'}}>
-          <Text style={styles.title}>Glucose Tracker</Text>
+          <Text style={styles.title}>Health Tracker</Text>
         </View>
         <View>
             <TextInput

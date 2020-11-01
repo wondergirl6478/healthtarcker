@@ -5,34 +5,32 @@ import MyHeader from '../components/MyHeader.js'
 import firebase from 'firebase';
 import db from '../config.js'
 
-export default class MyDonationScreen extends Component {
+export default class ReadingsScreen extends Component {
   static navigationOptions = { header: null };
 
    constructor(){
      super()
      this.state = {
        userId : firebase.auth().currentUser.email,
-       glucoseReadings : []
+       healthReadings : []
      }
      this.requestRef= null
    }
 
 
    getAllReadings =()=>{
-     this.requestRef = db.collection("glucose_readings").where("user_id" ,'==', this.state.userId)
+     this.requestRef = db.collection("health_readings").where("user_id" ,'==', this.state.userId)
      .onSnapshot((snapshot)=>{
-       var glucoseReadings = snapshot.docs.map(document => document.data());
+       var healthReadings = snapshot.docs.map(document => document.data());
        this.setState({
-         glucoseReadings : glucoseReadings,
+         healthReadings : healthReadings,
        });
      })
    }
 
    updateReadings=()=>{
-    db.collection('glucose_readings').add({
+    db.collection('health_readings').add({
         date_of          : this.state.dateOf,
-        meal_type      : this.state.mealType,
-        before_or_after           : this.state.beforeOrAfter,
         reading_of : this.state.readingOf
     })
   }
@@ -43,9 +41,7 @@ export default class MyDonationScreen extends Component {
      <ListItem
        key={i}
        title={item.date_of}
-      // title={item.meal_type}
-       //title={item.before_or_after}
-       //title={item.reading_of}
+       subtitle={item.reading_of}
        //leftElement={<Icon name="book" type="font-awesome" color ='#696969'/>}
        titleStyle={{ color: 'black', fontWeight: 'bold' }}
        
@@ -68,16 +64,16 @@ export default class MyDonationScreen extends Component {
          <MyHeader navigation={this.props.navigation} title="Readings"/>
          <View style={{flex:1}}>
            {
-             this.state.glucoseReadings.length === 0
+             this.state.healthReadings.length === 0
              ?(
                <View style={styles.subtitle}>
-                 <Text style={{ fontSize: 20}}>List of all Glucometer Readings</Text>
+                 <Text style={{ fontSize: 20}}>List of all Your Health Readings</Text>
                </View>
              )
              :(
                <FlatList
                  keyExtractor={this.keyExtractor}
-                 data={this.state.glucoseReadings}
+                 data={this.state.healthReadings}
                  renderItem={this.renderItem}
                />
              )
